@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -26,13 +26,21 @@ CONFIG += c++11
 
 SOURCES += \
         main.cpp \
-        mainwindow.cpp
+        mainwindow.cpp \
+    views/loginform.cpp \
+    views/logform.cpp \
+    managers/networkrequestmanager.cpp
 
 HEADERS += \
-        mainwindow.h
+        mainwindow.h \
+    views/loginform.h \
+    views/logform.h \
+    managers/networkrequestmanager.h
 
 FORMS += \
-        mainwindow.ui
+        mainwindow.ui \
+    views/loginform.ui \
+    views/logform.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
