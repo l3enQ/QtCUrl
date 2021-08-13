@@ -20,6 +20,8 @@ MainWindow::MainWindow(QWidget *parent) :
     });
     connect(loginForm, &LoginForm::loginRequest,
             NetworkRequestManager::Instance(), &NetworkRequestManager::onLoginRequest);
+    connect(loginForm, &LoginForm::logoutRequest,
+            NetworkRequestManager::Instance(), &NetworkRequestManager::onLogoutRequest);
 
     connect(NetworkRequestManager::Instance(), &NetworkRequestManager::loginSuccessful,
             loginForm, &LoginForm::onSuccessfulLogin);

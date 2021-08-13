@@ -81,6 +81,30 @@ void NetworkRequestManager::onLoginRequest(QString email, QString password)
     });
 }
 
+void NetworkRequestManager::onLogoutRequest()
+{
+    QNetworkRequest req(logout_url);
+
+    req.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+    const QByteArray auth = QString("Bearer %0").arg(_p->Token).toUtf8();
+    req.setRawHeader(QByteArray("Authorization"), auth);
+
+    QByteArray jsonData;
+    QNetworkReply *reply = _p->Manager.post(req, jsonData);
+
+    connect(reply, &QNetworkReply::finished, this, [=] {
+        reply->deleteLater();
+
+        QVariant status_code = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
+
+        //Error handling base on response code
+        if (status_code.toInt() == 200)
+            emit log("Logout success");
+        else
+            emit log("Logout didn't complete!");
+    });
+}
+
 NetworkRequestManager::NetworkRequestManager(QObject *parent): QObject(parent),
     _p(new NetworkRequestManagerPrivate)
 {

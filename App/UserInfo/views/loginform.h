@@ -18,6 +18,7 @@ public:
 
 signals:
     void loginRequest(QString email, QString password);
+    void logoutRequest();
 
 public slots:
     void onSuccessfulLogin(QString email);

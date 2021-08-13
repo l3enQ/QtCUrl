@@ -45,7 +45,7 @@ void LoginForm::on_btnLogin_clicked()
 
 void LoginForm::on_btnLogout_clicked()
 {
-    // logout
+    emit logoutRequest();
 
     ui->pLogin->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     ui->stackedWidget->setCurrentWidget(ui->pLogin);
