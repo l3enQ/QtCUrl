@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>InformationForm</class>
+ <widget class="QWidget" name="InformationForm">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout" columnstretch="1,3">
+   <property name="leftMargin">
+    <number>2</number>
+   </property>
+   <property name="topMargin">
+    <number>2</number>
+   </property>
+   <property name="rightMargin">
+    <number>2</number>
+   </property>
+   <property name="bottomMargin">
+    <number>2</number>
+   </property>
+   <property name="spacing">
+    <number>2</number>
+   </property>
+   <item row="0" column="0">
+    <widget class="QLabel" name="lUsers">
+     <property name="text">
+      <string>Users:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QLabel" name="lInfo">
+     <property name="text">
+      <string>Informations:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QTreeWidget" name="treeWidget">
+     <property name="editTriggers">
+      <set>QAbstractItemView::NoEditTriggers</set>
+     </property>
+     <property name="alternatingRowColors">
+      <bool>true</bool>
+     </property>
+     <property name="uniformRowHeights">
+      <bool>true</bool>
+     </property>
+     <property name="animated">
+      <bool>true</bool>
+     </property>
+     <property name="columnCount">
+      <number>2</number>
+     </property>
+     <column>
+      <property name="text">
+       <string notr="true">Property</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Value</string>
+      </property>
+     </column>
+     <item>
+      <property name="text">
+       <string>Basic</string>
+      </property>
+      <item>
+       <property name="text">
+        <string>id</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>name</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>email</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>language_id</string>
+       </property>
+      </item>
+     </item>
+     <item>
+      <property name="text">
+       <string>Advanced</string>
+      </property>
+      <item>
+       <property name="text">
+        <string>nickname</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>level</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>max_bet</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>min_bet</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>status</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>verification</string>
+       </property>
+      </item>
+     </item>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QListWidget" name="lwUsers">
+     <property name="minimumSize">
+      <size>
+       <width>120</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="alternatingRowColors">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

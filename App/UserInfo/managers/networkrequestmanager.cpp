@@ -105,6 +105,37 @@ void NetworkRequestManager::onLogoutRequest()
     });
 }
 
+void NetworkRequestManager::getUserList()
+{
+    QNetworkRequest req(users_url);
+    req.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+    const QByteArray auth = QString("Bearer %1").arg(_p->Token).toUtf8();
+    req.setRawHeader(QByteArray("Authorization"), auth);
+
+    QNetworkReply *reply = _p->Manager.get(req);
+
+    connect(reply, &QNetworkReply::finished, this, [this, reply]{
+        reply->deleteLater();
+
+
+        const QJsonDocument doc = QJsonDocument::fromJson(reply->readAll());
+        const QJsonObject obj = doc.object();
+
+        QVariant status_code = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
+
+        //Error handling base on response code
+        if (status_code.toInt() == 200) {
+            const QJsonValue  data    = obj["data"];
+            const QJsonObject dataObj = data.toObject();
+            qDebug() << "HTTP OK" << dataObj.keys();
+
+            const QJsonArray items = dataObj["items"].toArray();
+            emit userInfoReady(items);
+            emit log("User info ready.");
+        }
+    });
+}
+
 NetworkRequestManager::NetworkRequestManager(QObject *parent): QObject(parent),
     _p(new NetworkRequestManagerPrivate)
 {

@@ -2,6 +2,7 @@
 #define NETWORKREQUESTMANAGER_H
 
 #include <QObject>
+#include <QJsonArray>
 
 class NetworkRequestManagerPrivate;
 class NetworkRequestManager: public QObject
@@ -13,11 +14,14 @@ public:
 public slots:
     void onLoginRequest(QString email, QString password);
     void onLogoutRequest();
+    void getUserList();
 
 signals:
     void loginSuccessful(QString email);
     void loginFailed();
     void log(QString log);
+
+    void userInfoReady(QJsonArray items);
 
 private:
     explicit NetworkRequestManager(QObject *parent = nullptr);

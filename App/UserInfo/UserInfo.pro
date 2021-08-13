@@ -29,18 +29,21 @@ SOURCES += \
         mainwindow.cpp \
     views/loginform.cpp \
     views/logform.cpp \
-    managers/networkrequestmanager.cpp
+    managers/networkrequestmanager.cpp \
+    views/informationform.cpp
 
 HEADERS += \
         mainwindow.h \
     views/loginform.h \
     views/logform.h \
-    managers/networkrequestmanager.h
+    managers/networkrequestmanager.h \
+    views/informationform.h
 
 FORMS += \
         mainwindow.ui \
     views/loginform.ui \
-    views/logform.ui
+    views/logform.ui \
+    views/informationform.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

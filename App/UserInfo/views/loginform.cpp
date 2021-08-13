@@ -84,3 +84,8 @@ void LoginForm::on_lePassword_returnPressed()
 {
     ui->btnLogin->animateClick();
 }
+
+void LoginForm::on_btnInfo_clicked()
+{
+    emit showInfo();
+}

@@ -20,6 +20,8 @@ signals:
     void loginRequest(QString email, QString password);
     void logoutRequest();
 
+    void showInfo();
+
 public slots:
     void onSuccessfulLogin(QString email);
     void onLoginFailed();
@@ -30,10 +32,10 @@ private slots:
 
     void on_lePassword_textChanged(const QString &arg1);
     void on_leUser_textChanged(const QString &arg1);
-
     void on_leUser_returnPressed();
-
     void on_lePassword_returnPressed();
+
+    void on_btnInfo_clicked();
 
 private:
     Ui::LoginForm *ui;
