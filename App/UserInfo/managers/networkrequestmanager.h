@@ -14,7 +14,7 @@ public:
 public slots:
     void onLoginRequest(QString email, QString password);
     void onLogoutRequest();
-    void getUserList();
+    void getUserList(QString userMail);
     void onUpdateRequest(int id, QJsonValue item);
     void onRefreshRequest(int id);
 
@@ -23,7 +23,7 @@ signals:
     void loginFailed();
     void log(QString log);
 
-    void userInfoReady(QJsonArray items);
+    void userInfoReady(QString userMail, QJsonArray items);
 
 private:
     explicit NetworkRequestManager(QObject *parent = nullptr);

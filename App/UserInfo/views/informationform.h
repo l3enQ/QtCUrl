@@ -22,7 +22,7 @@ signals:
     void refreshReq(int id);
 
 public slots:
-    void usersDataReady(QJsonArray data);
+    void usersDataReady(QString userMail, QJsonArray data);
 
 private slots:
     void on_lwUsers_currentRowChanged(int currentRow);

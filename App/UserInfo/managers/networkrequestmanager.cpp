@@ -15,6 +15,7 @@ public:
     QNetworkAccessManager Manager;
     QString Token;
     QThread Thread;
+    QString reqUserMail;
 };
 
 
@@ -105,7 +106,7 @@ void NetworkRequestManager::onLogoutRequest()
     });
 }
 
-void NetworkRequestManager::getUserList()
+void NetworkRequestManager::getUserList(QString userMail)
 {
     QNetworkRequest req(users_url);
     req.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
@@ -114,7 +115,7 @@ void NetworkRequestManager::getUserList()
 
     QNetworkReply *reply = _p->Manager.get(req);
 
-    connect(reply, &QNetworkReply::finished, this, [this, reply]{
+    connect(reply, &QNetworkReply::finished, this, [=](){
         reply->deleteLater();
 
         const QJsonDocument doc = QJsonDocument::fromJson(reply->readAll());
@@ -129,7 +130,8 @@ void NetworkRequestManager::getUserList()
             qDebug() << "HTTP OK" << dataObj.keys();
 
             const QJsonArray items = dataObj["items"].toArray();
-            emit userInfoReady(items);
+            _p->reqUserMail = userMail;
+            emit userInfoReady(userMail, items);
             emit log("User info ready.");
             return;
         }
@@ -184,7 +186,7 @@ void NetworkRequestManager::onUpdateRequest(int id, QJsonValue item)
 void NetworkRequestManager::onRefreshRequest(int id)
 {
     // update UI again specificly?
-    getUserList();
+    getUserList(_p->reqUserMail);
 }
 
 NetworkRequestManager::NetworkRequestManager(QObject *parent): QObject(parent),

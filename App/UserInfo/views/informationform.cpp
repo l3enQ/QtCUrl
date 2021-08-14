@@ -53,7 +53,7 @@ InformationForm::~InformationForm()
     delete ui;
 }
 
-void InformationForm::usersDataReady(QJsonArray data)
+void InformationForm::usersDataReady(QString userMail, QJsonArray data)
 {
     int current = ui->lwUsers->currentRow();
     ui->lwUsers->clear();
@@ -67,12 +67,19 @@ void InformationForm::usersDataReady(QJsonArray data)
         lwItem->setData(Qt::UserRole, item);
 
         ui->lwUsers->addItem(lwItem);
+
+        if (!userMail.isEmpty() && item["email"].toString() == userMail)
+            current = ui->lwUsers->row(lwItem);
+
     }
 
     if (current == -1)
         ui->lwUsers->setCurrentRow(0);
     else
         ui->lwUsers->setCurrentRow(current);
+
+    bool isAdmin = userMail.isEmpty();
+    ui->fUsers->setVisible(isAdmin);
 }
 
 void InformationForm::on_lwUsers_currentRowChanged(int currentRow)

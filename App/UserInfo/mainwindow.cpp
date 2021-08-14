@@ -48,8 +48,8 @@ MainWindow::MainWindow(QWidget *parent) :
     layout->addWidget(infoForm);
 
     connect(NetworkRequestManager::Instance(), &NetworkRequestManager::userInfoReady,
-            this, [=](QJsonArray data){
-        infoForm->usersDataReady(data);
+            this, [=](QString userMail, QJsonArray data){
+        infoForm->usersDataReady(userMail, data);
         infoDialog->show();
     });
 

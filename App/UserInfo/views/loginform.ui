@@ -158,6 +158,16 @@
          </property>
         </widget>
        </item>
+       <item row="2" column="0" colspan="2">
+        <widget class="QCheckBox" name="chkbxAdmin">
+         <property name="text">
+          <string>Login as Admin</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
       </layout>
      </widget>
      <widget class="QWidget" name="pLogout">
@@ -240,6 +250,14 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>leUser</tabstop>
+  <tabstop>lePassword</tabstop>
+  <tabstop>chkbxAdmin</tabstop>
+  <tabstop>btnLogin</tabstop>
+  <tabstop>btnLogout</tabstop>
+  <tabstop>btnInfo</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

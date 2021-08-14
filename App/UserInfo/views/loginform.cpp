@@ -87,5 +87,6 @@ void LoginForm::on_lePassword_returnPressed()
 
 void LoginForm::on_btnInfo_clicked()
 {
-    emit showInfo();
+    emit showInfo(ui->chkbxAdmin->isChecked() ? "" :
+                                                ui->lLoginUser->text());
 }

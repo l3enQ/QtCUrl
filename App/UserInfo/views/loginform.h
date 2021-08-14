@@ -20,7 +20,7 @@ signals:
     void loginRequest(QString email, QString password);
     void logoutRequest();
 
-    void showInfo();
+    void showInfo(QString email);
 
 public slots:
     void onSuccessfulLogin(QString email);
