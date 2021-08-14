@@ -101,7 +101,7 @@ void NetworkRequestManager::onLogoutRequest()
         if (status_code.toInt() == 200)
             emit log("Logout success");
         else
-            emit log("Logout didn't complete!");
+            emit log(QString("HTTP Error code: %0").arg(status_code.toInt()));
     });
 }
 
@@ -117,7 +117,6 @@ void NetworkRequestManager::getUserList()
     connect(reply, &QNetworkReply::finished, this, [this, reply]{
         reply->deleteLater();
 
-
         const QJsonDocument doc = QJsonDocument::fromJson(reply->readAll());
         const QJsonObject obj = doc.object();
 
@@ -132,6 +131,52 @@ void NetworkRequestManager::getUserList()
             const QJsonArray items = dataObj["items"].toArray();
             emit userInfoReady(items);
             emit log("User info ready.");
+            return;
+        }
+
+        emit log(QString("HTTP Error code: %0").arg(status_code.toInt()));
+    });
+}
+
+void NetworkRequestManager::onUpdateRequest(int id, QJsonValue item)
+{
+    QNetworkRequest req(host_url.resolved(QUrl(QString("users/update/%0").arg(id))));
+    req.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+    const QByteArray auth = QString("Bearer %1").arg(_p->Token).toUtf8();
+    req.setRawHeader(QByteArray("Authorization"), auth);
+
+    QByteArray jsonData = QJsonDocument(item.toObject()).toJson();
+
+    QNetworkReply *reply = _p->Manager.put(req, jsonData);
+
+    connect(reply, &QNetworkReply::finished, this, [=](){
+        reply->deleteLater();
+
+        QVariant status_code = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
+
+        //Error handling base on response code
+        if (status_code.toInt() == 200) {
+
+            emit log("User info updated successfully");
+
+            // update UI again specificly?
+            getUserList();
+
+        } else if (status_code.toInt() == 422) {
+            QString error = "Parameters are not valid!";
+
+            const QJsonDocument doc = QJsonDocument::fromJson(reply->readAll());
+            const QJsonObject obj = doc.object();
+            foreach (auto key, obj.keys()) {
+                const QJsonValue data = obj[key];
+                error.append("\n");
+                error.append(QString("%0: %1").arg(key).arg(data.toArray().first().toString()));
+            }
+
+            emit log(error);
+
+        } else {
+            emit log(QString("HTTP Error code: %0").arg(status_code.toInt()));
         }
     });
 }

@@ -17,11 +17,18 @@ public:
     explicit InformationForm(QWidget *parent = nullptr);
     ~InformationForm();
 
+signals:
+    void updateReq(int id, QJsonValue data);
+
 public slots:
     void usersDataReady(QJsonArray data);
 
 private slots:
     void on_lwUsers_currentRowChanged(int currentRow);
+
+    void on_btnUpdate_clicked();
+
+    void on_btnRefresh_clicked();
 
 private:
     Ui::InformationForm *ui;

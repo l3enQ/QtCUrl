@@ -56,6 +56,9 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(loginForm, &LoginForm::logoutRequest, this, [=](){
         infoDialog->close();
     });
+
+    connect(infoForm, &InformationForm::updateReq,
+            NetworkRequestManager::Instance(), &NetworkRequestManager::onUpdateRequest);
 }
 
 MainWindow::~MainWindow()

@@ -5,15 +5,11 @@
 #include <QStyledItemDelegate>
 #include <QDebug>
 
-class TreeWidgetDelegate: public QStyledItemDelegate {
+class NotEditableDelegate: public QStyledItemDelegate {
 public:
-    TreeWidgetDelegate(QObject* parent=0): QStyledItemDelegate(parent) {}
+    NotEditableDelegate(QObject* parent=0): QStyledItemDelegate(parent) {}
     virtual QWidget* createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const {
         if (index.column() == 0)
-            return 0;
-
-        QString key = index.model()->index(index.row(), 0, index.parent()).data().toString();
-        if (key == "id")
             return 0;
 
         return QStyledItemDelegate::createEditor(parent, option, index);
@@ -26,7 +22,7 @@ InformationForm::InformationForm(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    ui->treeWidget->setItemDelegate(new TreeWidgetDelegate());
+    ui->treeWidget->setItemDelegateForColumn(0, new NotEditableDelegate());
 
     // fill items for using later
     QTreeWidgetItem *itemGeneral = ui->treeWidget->topLevelItem(0);
@@ -38,8 +34,18 @@ InformationForm::InformationForm(QWidget *parent) :
         _items << itemAdvanced->child(child);
     }
 
-    foreach (auto item, _items)
+    foreach (auto item, _items) {
+        QString updateKey = item->data(0, Qt::DisplayRole).toString();
+
+        if (updateKey == "id" || updateKey == "email" || updateKey == "verification")
+            continue;
+
+        if (updateKey == "level")
+            updateKey = "user_level";
+
         item->setFlags(item->flags() | Qt::ItemIsEditable);
+        item->setData(0, Qt::UserRole, updateKey);
+    }
 }
 
 InformationForm::~InformationForm()
@@ -76,4 +82,25 @@ void InformationForm::on_lwUsers_currentRowChanged(int currentRow)
         QString key = item->data(0, Qt::DisplayRole).toString();
         item->setData(1, Qt::DisplayRole, itemData[key].toVariant());
     }
+}
+
+void InformationForm::on_btnUpdate_clicked()
+{
+    int id = ui->lwUsers->currentItem()->data(Qt::UserRole).toJsonValue()["id"].toInt();
+
+    QJsonObject itemDataObj;
+    foreach (auto item, _items) {
+        QString updateKey = item->data(0, Qt::UserRole).toString();
+        if (updateKey.isEmpty())
+            continue;
+
+        itemDataObj.insert(updateKey, QJsonValue::fromVariant(item->data(1, Qt::DisplayRole)));
+    }
+
+    emit updateReq(id, QJsonValue(itemDataObj));
+}
+
+void InformationForm::on_btnRefresh_clicked()
+{
+
 }
