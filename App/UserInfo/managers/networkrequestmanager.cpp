@@ -183,6 +183,37 @@ void NetworkRequestManager::onUpdateRequest(int id, QJsonValue item)
     });
 }
 
+void NetworkRequestManager::onUpdatePasswordRequest(int id, QString name, QString nickname, QString password)
+{
+    QNetworkRequest req(host_url.resolved(QUrl(QString("users/update/%0").arg(id))));
+    req.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+    const QByteArray auth = QString("Bearer %1").arg(_p->Token).toUtf8();
+    req.setRawHeader(QByteArray("Authorization"), auth);
+
+    QJsonObject json {
+        {"name", name},
+        {"nickname", nickname},
+        {"password", password},
+        {"password_confirmation", password}
+    };
+
+    QByteArray jsonData = QJsonDocument(json).toJson();
+
+    QNetworkReply *reply = _p->Manager.put(req, jsonData);
+
+    connect(reply, &QNetworkReply::finished, this, [=](){
+        reply->deleteLater();
+
+        QVariant status_code = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
+
+        //Error handling base on response code
+        if (status_code.toInt() == 200)
+            emit log("password updated successfully");
+        else
+            emit log(QString("HTTP Error code: %0").arg(status_code.toInt()));
+    });
+}
+
 void NetworkRequestManager::onRefreshRequest(int id)
 {
     // update UI again specificly?

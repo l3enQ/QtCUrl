@@ -19,6 +19,7 @@ public:
 
 signals:
     void updateReq(int id, QJsonValue data);
+    void updatePasswordReq(int id, QString name, QString nickname, QString password);
     void refreshReq(int id);
 
 public slots:
@@ -28,8 +29,8 @@ private slots:
     void on_lwUsers_currentRowChanged(int currentRow);
 
     void on_btnUpdate_clicked();
-
     void on_btnRefresh_clicked();
+    void on_btnSetPassword_clicked();
 
 private:
     Ui::InformationForm *ui;

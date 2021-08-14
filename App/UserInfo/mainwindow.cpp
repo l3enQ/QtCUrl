@@ -59,6 +59,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(infoForm, &InformationForm::updateReq,
             NetworkRequestManager::Instance(), &NetworkRequestManager::onUpdateRequest);
+    connect(infoForm, &InformationForm::updatePasswordReq,
+            NetworkRequestManager::Instance(), &NetworkRequestManager::onUpdatePasswordRequest);
     connect(infoForm, &InformationForm::refreshReq,
             NetworkRequestManager::Instance(), &NetworkRequestManager::onRefreshRequest);
 }

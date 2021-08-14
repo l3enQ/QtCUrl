@@ -30,20 +30,23 @@ SOURCES += \
     views/loginform.cpp \
     views/logform.cpp \
     managers/networkrequestmanager.cpp \
-    views/informationform.cpp
+    views/informationform.cpp \
+    views/newpassworddialog.cpp
 
 HEADERS += \
         mainwindow.h \
     views/loginform.h \
     views/logform.h \
     managers/networkrequestmanager.h \
-    views/informationform.h
+    views/informationform.h \
+    views/newpassworddialog.h
 
 FORMS += \
         mainwindow.ui \
     views/loginform.ui \
     views/logform.ui \
-    views/informationform.ui
+    views/informationform.ui \
+    views/newpassworddialog.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

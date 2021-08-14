@@ -73,6 +73,13 @@
        </spacer>
       </item>
       <item>
+       <widget class="QPushButton" name="btnSetPassword">
+        <property name="text">
+         <string>Set password</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QPushButton" name="btnRefresh">
         <property name="text">
          <string>Refresh</string>
@@ -241,9 +248,11 @@
   </layout>
  </widget>
  <tabstops>
+  <tabstop>lwUsers</tabstop>
   <tabstop>treeWidget</tabstop>
   <tabstop>btnUpdate</tabstop>
   <tabstop>btnRefresh</tabstop>
+  <tabstop>btnSetPassword</tabstop>
  </tabstops>
  <resources/>
  <connections/>

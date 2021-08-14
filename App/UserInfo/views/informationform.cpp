@@ -1,6 +1,8 @@
 #include "informationform.h"
 #include "ui_informationform.h"
 
+#include "newpassworddialog.h"
+
 #include <QJsonObject>
 #include <QStyledItemDelegate>
 #include <QDebug>
@@ -116,4 +118,21 @@ void InformationForm::on_btnRefresh_clicked()
     int id = ui->lwUsers->currentItem()->data(Qt::UserRole).toJsonValue()["id"].toInt();
 
     emit refreshReq(id);
+}
+
+void InformationForm::on_btnSetPassword_clicked()
+{
+    NewPasswordDialog *dialog = new NewPasswordDialog(this);
+
+    if (dialog->exec() == 1) {
+        QJsonValue value = ui->lwUsers->currentItem()->data(Qt::UserRole).toJsonValue();
+        int id           = value["id"].toInt();
+        QString name     = value["name"].toString();
+        QString nickname = value["nickname"].toString();
+
+        QString password = dialog->getSpecifiedPassword();
+        emit updatePasswordReq(id, name, nickname, password);
+    }
+
+    dialog->deleteLater();
 }

@@ -16,6 +16,7 @@ public slots:
     void onLogoutRequest();
     void getUserList(QString userMail);
     void onUpdateRequest(int id, QJsonValue item);
+    void onUpdatePasswordRequest(int id, QString name, QString nickname, QString password);
     void onRefreshRequest(int id);
 
 signals:
