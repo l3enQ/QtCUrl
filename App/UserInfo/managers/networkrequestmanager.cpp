@@ -160,7 +160,7 @@ void NetworkRequestManager::onUpdateRequest(int id, QJsonValue item)
             emit log("User info updated successfully");
 
             // update UI again specificly?
-            getUserList();
+            onRefreshRequest(id);
 
         } else if (status_code.toInt() == 422) {
             QString error = "Parameters are not valid!";
@@ -179,6 +179,12 @@ void NetworkRequestManager::onUpdateRequest(int id, QJsonValue item)
             emit log(QString("HTTP Error code: %0").arg(status_code.toInt()));
         }
     });
+}
+
+void NetworkRequestManager::onRefreshRequest(int id)
+{
+    // update UI again specificly?
+    getUserList();
 }
 
 NetworkRequestManager::NetworkRequestManager(QObject *parent): QObject(parent),

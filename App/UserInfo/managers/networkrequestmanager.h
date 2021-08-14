@@ -16,6 +16,7 @@ public slots:
     void onLogoutRequest();
     void getUserList();
     void onUpdateRequest(int id, QJsonValue item);
+    void onRefreshRequest(int id);
 
 signals:
     void loginSuccessful(QString email);

@@ -19,6 +19,7 @@ public:
 
 signals:
     void updateReq(int id, QJsonValue data);
+    void refreshReq(int id);
 
 public slots:
     void usersDataReady(QJsonArray data);

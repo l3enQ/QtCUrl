@@ -55,6 +55,7 @@ InformationForm::~InformationForm()
 
 void InformationForm::usersDataReady(QJsonArray data)
 {
+    int current = ui->lwUsers->currentRow();
     ui->lwUsers->clear();
 
     foreach(const QJsonValue &item, data){
@@ -68,7 +69,10 @@ void InformationForm::usersDataReady(QJsonArray data)
         ui->lwUsers->addItem(lwItem);
     }
 
-    ui->lwUsers->setCurrentRow(0);
+    if (current == -1)
+        ui->lwUsers->setCurrentRow(0);
+    else
+        ui->lwUsers->setCurrentRow(current);
 }
 
 void InformationForm::on_lwUsers_currentRowChanged(int currentRow)
@@ -102,5 +106,7 @@ void InformationForm::on_btnUpdate_clicked()
 
 void InformationForm::on_btnRefresh_clicked()
 {
+    int id = ui->lwUsers->currentItem()->data(Qt::UserRole).toJsonValue()["id"].toInt();
 
+    emit refreshReq(id);
 }
