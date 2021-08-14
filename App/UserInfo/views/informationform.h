@@ -8,6 +8,7 @@ namespace Ui {
 class InformationForm;
 }
 
+class QTreeWidgetItem;
 class InformationForm : public QWidget
 {
     Q_OBJECT
@@ -24,6 +25,7 @@ private slots:
 
 private:
     Ui::InformationForm *ui;
+    QList<QTreeWidgetItem *> _items;
 };
 
 #endif // INFORMATIONFORM_H
