@@ -47,7 +47,7 @@ MainWindow::MainWindow(QWidget *parent) :
     InformationForm *infoForm = new InformationForm(infoDialog);
     layout->addWidget(infoForm);
 
-    connect(NetworkRequestManager::Instance(), &NetworkRequestManager::userInfoReady,
+    connect(NetworkRequestManager::Instance(), &NetworkRequestManager::usersInfoReady,
             this, [=](QString userMail, QJsonArray data){
         infoForm->usersDataReady(userMail, data);
         infoDialog->show();
@@ -63,6 +63,10 @@ MainWindow::MainWindow(QWidget *parent) :
             NetworkRequestManager::Instance(), &NetworkRequestManager::onUpdatePasswordRequest);
     connect(infoForm, &InformationForm::refreshReq,
             NetworkRequestManager::Instance(), &NetworkRequestManager::onRefreshRequest);
+    connect(infoForm, &InformationForm::refreshAllReq,
+            NetworkRequestManager::Instance(), &NetworkRequestManager::onRefreshAllRequest);
+    connect(NetworkRequestManager::Instance(), &NetworkRequestManager::userInfoReady,
+            infoForm, &InformationForm::userDataReady);
 }
 
 MainWindow::~MainWindow()

@@ -131,12 +131,46 @@ void NetworkRequestManager::getUserList(QString userMail)
 
             const QJsonArray items = dataObj["items"].toArray();
             _p->reqUserMail = userMail;
-            emit userInfoReady(userMail, items);
-            emit log("User info ready.");
+            emit usersInfoReady(userMail, items);
+            emit log("Users info ready.");
             return;
         }
 
         emit log(QString("HTTP Error code: %0").arg(status_code.toInt()));
+    });
+}
+
+void NetworkRequestManager::getUserInfo(int id, QString userMail)
+{
+    QNetworkRequest req(host_url.resolved(QUrl(QString("users/view/%0").arg(id))));
+    req.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+    const QByteArray auth = QString("Bearer %1").arg(_p->Token).toUtf8();
+    req.setRawHeader(QByteArray("Authorization"), auth);
+
+    QNetworkReply *reply = _p->Manager.get(req);
+
+    connect(reply, &QNetworkReply::finished, this, [=](){
+        reply->deleteLater();
+
+        QVariant status_code = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
+
+        //Error handling base on response code
+        if (status_code.toInt() == 200) {
+            const QJsonDocument doc     = QJsonDocument::fromJson(reply->readAll());
+            const QJsonObject   obj     = doc.object();
+            const QJsonValue    data    = obj["data"];
+            const QJsonObject   dataObj = data.toObject();
+            qDebug() << "HTTP OK" << dataObj.keys();
+
+            const QJsonObject UserInfo = dataObj["User"].toObject();
+            _p->reqUserMail = userMail;
+
+            emit userInfoReady(UserInfo["id"].toInt(), userMail, UserInfo);
+            emit log("User info ready.");
+
+        } else {
+            emit log(QString("HTTP Error code: %0").arg(status_code.toInt()));
+        }
     });
 }
 
@@ -161,7 +195,6 @@ void NetworkRequestManager::onUpdateRequest(int id, QJsonValue item)
 
             emit log("User info updated successfully");
 
-            // update UI again specificly?
             onRefreshRequest(id);
 
         } else if (status_code.toInt() == 422) {
@@ -216,7 +249,11 @@ void NetworkRequestManager::onUpdatePasswordRequest(int id, QString name, QStrin
 
 void NetworkRequestManager::onRefreshRequest(int id)
 {
-    // update UI again specificly?
+    getUserInfo(id, _p->reqUserMail);
+}
+
+void NetworkRequestManager::onRefreshAllRequest()
+{
     getUserList(_p->reqUserMail);
 }
 

@@ -73,6 +73,13 @@
        </spacer>
       </item>
       <item>
+       <widget class="QPushButton" name="btnRefreshAll">
+        <property name="text">
+         <string>Refresh All</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QPushButton" name="btnSetPassword">
         <property name="text">
          <string>Set password</string>

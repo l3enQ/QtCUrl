@@ -60,7 +60,7 @@ void InformationForm::usersDataReady(QString userMail, QJsonArray data)
     int current = ui->lwUsers->currentRow();
     ui->lwUsers->clear();
 
-    foreach(const QJsonValue &item, data){
+    foreach (const QJsonValue &item, data) {
         QListWidgetItem *lwItem =
                 new QListWidgetItem(QString("ID: %1, Name: %2")
                                     .arg(item["id"].toInt())
@@ -72,7 +72,6 @@ void InformationForm::usersDataReady(QString userMail, QJsonArray data)
 
         if (!userMail.isEmpty() && item["email"].toString() == userMail)
             current = ui->lwUsers->row(lwItem);
-
     }
 
     if (current == -1)
@@ -82,6 +81,28 @@ void InformationForm::usersDataReady(QString userMail, QJsonArray data)
 
     bool isAdmin = userMail.isEmpty();
     ui->fUsers->setVisible(isAdmin);
+    ui->btnRefreshAll->setVisible(isAdmin);
+}
+
+void InformationForm::userDataReady(int id, QString userMail, QJsonValue info)
+{
+    for (int var = 0; var < ui->lwUsers->count(); ++var) {
+        QListWidgetItem *item = ui->lwUsers->item(var);
+        if (item->data(Qt::UserRole).toJsonValue()["id"] == id) {
+            item->setData(Qt::UserRole, info);
+            item->setData(Qt::DisplayRole, QString("ID: %1, Name: %2")
+                                                .arg(id).arg(info["name"].toString()));
+
+            if (var == ui->lwUsers->currentRow()) {
+                foreach (auto item, _items) {
+                    QString key = item->data(0, Qt::DisplayRole).toString();
+                    item->setData(1, Qt::DisplayRole, info[key].toVariant());
+                }
+            }
+
+            break;
+        }
+    }
 }
 
 void InformationForm::on_lwUsers_currentRowChanged(int currentRow)
@@ -135,4 +156,9 @@ void InformationForm::on_btnSetPassword_clicked()
     }
 
     dialog->deleteLater();
+}
+
+void InformationForm::on_btnRefreshAll_clicked()
+{
+    emit refreshAllReq();
 }
